@@ -1,0 +1,33 @@
+node_modules
+npm-debug.log
+.DS_Store
+
+# For PCBs designed using KiCad: http://www.kicad-pcb.org/
+
+# Temporary files
+*.000
+*.bak
+*.bck
+*.kicad_pcb-bak
+*~
+_autosave-*
+*.tmp
+
+# Netlist files (exported from Eeschema)
+*.net
+
+# Autorouter files (exported from Pcbnew)
+.dsn
+
+# Exported BOM files
+*.xml
+*.csv
+
+# VS Code files
+.vscode/ipch
+.vscode/.browse*
+
+# Platform IO files
+.pio
+.pioenvs
+.piolibdeps
