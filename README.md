@@ -1,4 +1,4 @@
-# RVL WiFi
+# RVL ESP32 WiFi
 
 An implementation of RVL based on the Arduino framework for the ESP32 using async UDP.
 

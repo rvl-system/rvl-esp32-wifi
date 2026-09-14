@@ -1,11 +1,15 @@
 {
   "name": "RVLESP32WiFi",
-  "description": "An ESP32-only RVL transport that timestamps packet arrival in an AsyncUDP callback and hands packets to the main loop through a FreeRTOS queue",
+  "description": "An implementation of RVL based on the Arduino framework for the ESP32 using async UDP",
   "keywords": "led synchronization, clock synchronization, messaging",
   "authors": {
     "name": "Bryan Hughes",
     "email": "bryan@nebri.us",
     "url": "https://nebri.us"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rvl-system/rvl-esp32-wifi.git"
   },
   "version": "1.0.0",
   "license": "GPL-3.0",
