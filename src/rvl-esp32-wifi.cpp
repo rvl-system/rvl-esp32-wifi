@@ -62,6 +62,24 @@ uint32_t lastLoggedDroppedPackets = 0;
 PacketSlot currentPacket;
 bool currentPacketValid = false;
 uint16_t readCursor = 0;
+bool readPastEndLogged = false;
+
+// rvl's logger formats into a buffer 3x the length of the format string, so the
+// dump is capped to keep the expanded message inside it
+#define MAX_DUMP_BYTES 16
+
+void logReadPastEnd() {
+  char bytes[MAX_DUMP_BYTES * 3 + 1];
+  uint16_t dumpLength = currentPacket.length < MAX_DUMP_BYTES
+      ? currentPacket.length
+      : MAX_DUMP_BYTES;
+  for (uint16_t i = 0; i < dumpLength; i++) {
+    snprintf(bytes + i * 3, 4, "%02X ", currentPacket.data[i]);
+  }
+  bytes[dumpLength * 3] = '\0';
+  rvl::error("Read past end of packet: valid=%d length=%d cursor=%d bytes=%s",
+      currentPacketValid, currentPacket.length, readCursor, bytes);
+}
 
 uint8_t txBuffer[MAX_PACKET_SIZE];
 uint16_t txLength = 0;
@@ -195,11 +213,16 @@ uint16_t System::parsePacket() {
   }
   currentPacketValid = true;
   readCursor = 0;
+  readPastEndLogged = false;
   return currentPacket.length;
 }
 
 uint8_t System::read8() {
   if (!currentPacketValid || readCursor >= currentPacket.length) {
+    if (!readPastEndLogged) {
+      readPastEndLogged = true;
+      logReadPastEnd();
+    }
     // Match WiFiUDP's soft-failure semantics: read() returns -1
     return 0xFF;
   }
