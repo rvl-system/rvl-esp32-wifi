@@ -37,7 +37,7 @@ namespace RVLESP32Wifi {
 
 #define RX_QUEUE_LENGTH 16
 
-// The largest RVL packet is the wave animation packet at ~92 bytes (10 byte
+// The largest RVL packet is the wave animation packet at ~91 bytes (9 byte
 // header + 82 byte payload)
 #define MAX_PACKET_SIZE 128
 
@@ -169,17 +169,13 @@ public:
     currentPacketValid = false;
   }
 
-  uint32_t packetArrivalTime() override {
-    if (!currentPacketValid) {
-      return UINT32_MAX;
-    }
-    return currentPacket.arrivalTime;
-  }
-
 protected:
   void beginPacket() {
     txLength = 0;
   }
+
+  PacketSlot currentPacket;
+  bool currentPacketValid = false;
 
 private:
   // Runs in the network task, NOT the main loop: it must touch nothing but its
@@ -230,8 +226,6 @@ private:
   uint32_t droppedPackets = 0;
   uint32_t lastLoggedDroppedPackets = 0;
 
-  PacketSlot currentPacket;
-  bool currentPacketValid = false;
   uint16_t readCursor = 0;
   bool readPastEndLogged = false;
 
@@ -261,6 +255,13 @@ public:
   // same MAC-layer retries a unicast would get
   void beginCoordinatorWrite() override {
     beginPacket();
+  }
+
+  uint32_t packetArrivalTime() override {
+    if (!currentPacketValid) {
+      return UINT32_MAX;
+    }
+    return currentPacket.arrivalTime;
   }
 };
 
