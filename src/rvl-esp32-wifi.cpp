@@ -59,16 +59,15 @@ public:
   UdpEndpoint(uint16_t port, const char* name) : port(port), name(name) {
   }
 
+  // The handler goes in before the first listen(), so the async_udp task can
+  // never call it while it's half assigned
   void init() {
     rxQueue = xQueueCreate(RX_QUEUE_LENGTH, sizeof(PacketSlot));
+    udp.onPacket([this](AsyncUDPPacket& packet) { onPacketReceived(packet); });
   }
 
   bool open() {
-    if (!udp.listen(port)) {
-      return false;
-    }
-    udp.onPacket([this](AsyncUDPPacket& packet) { onPacketReceived(packet); });
-    return true;
+    return udp.listen(port);
   }
 
   void close() {
