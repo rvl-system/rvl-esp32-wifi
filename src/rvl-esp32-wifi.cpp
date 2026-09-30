@@ -103,8 +103,8 @@ public:
 
   void write(uint8_t* data, uint16_t length) override {
     if (txLength + length > MAX_PACKET_SIZE) {
-      rvl::error("Attempted to write more than %d bytes to a packet",
-          MAX_PACKET_SIZE);
+      rvl::error(
+          "Attempted to write more than %d bytes to a packet", MAX_PACKET_SIZE);
       return;
     }
     memcpy(txBuffer + txLength, data, length);
@@ -194,8 +194,8 @@ private:
 
   void appendByte(uint8_t data) {
     if (txLength >= MAX_PACKET_SIZE) {
-      rvl::error("Attempted to write more than %d bytes to a packet",
-          MAX_PACKET_SIZE);
+      rvl::error(
+          "Attempted to write more than %d bytes to a packet", MAX_PACKET_SIZE);
       return;
     }
     txBuffer[txLength++] = data;
@@ -241,8 +241,7 @@ public:
   }
 };
 
-class InfrastructureEndpoint
-    : public UdpEndpoint<rvl::System::Infrastructure> {
+class InfrastructureEndpoint : public UdpEndpoint<rvl::System::Infrastructure> {
 public:
   using UdpEndpoint::UdpEndpoint;
 
