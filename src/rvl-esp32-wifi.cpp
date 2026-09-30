@@ -56,8 +56,7 @@ struct PacketSlot {
 // write halves have the same signatures
 template <class Base> class UdpEndpoint : public Base {
 public:
-  UdpEndpoint(uint16_t port, const char* name) : port(port), name(name) {
-  }
+  UdpEndpoint(uint16_t port, const char* name) : port(port), name(name) {}
 
   // The handler goes in before the first listen(), so the async_udp task can
   // never call it while it's half assigned
