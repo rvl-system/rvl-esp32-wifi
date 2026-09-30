@@ -211,7 +211,8 @@ private:
     bytes[dumpLength * 3] = '\0';
     rvl::error(
         "Read past end of %s packet: valid=%d length=%d cursor=%d bytes=%s",
-        name, currentPacketValid, currentPacket.length, readCursor, bytes);
+        name, static_cast<int>(currentPacketValid), currentPacket.length,
+        readCursor, bytes);
   }
 
   uint16_t port;
@@ -318,6 +319,8 @@ void System::loop() {
     }
     animationEndpoint.logDroppedPackets();
     infrastructureEndpoint.logDroppedPackets();
+    break;
+  default:
     break;
   }
 }
