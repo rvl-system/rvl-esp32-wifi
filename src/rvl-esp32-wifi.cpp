@@ -37,12 +37,12 @@ namespace RVLESP32Wifi {
 
 #define RX_QUEUE_LENGTH 16
 
-// The largest RVL packet is the wave animation packet at ~91 bytes (9 byte
-// header + 82 byte payload)
+// The largest RVL packet is a parametric scene at 97 bytes (9 byte header,
+// 6 byte scene prefix, 82 byte settings)
 #define MAX_PACKET_SIZE 128
 
-// rvl's logger formats into a buffer 3x the length of the format string, so the
-// dump is capped to keep the expanded message inside it
+// rvl's logger cuts a line short past 256 bytes, so the dump is capped to keep
+// the expanded message inside it
 #define MAX_DUMP_BYTES 16
 
 struct PacketSlot {
